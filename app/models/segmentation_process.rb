@@ -7,12 +7,12 @@ class SegmentationProcess
   # Description: Downloads a file form a URL and assigns it's path to the @image_src variable
   #
   def initialize
+    @image_src = "image.jpg"
     download = open("http://24.media.tumblr.com/tumblr_lfp3qax6Lm1qfmtrbo1_1280.jpg")
-    file = open("public/images/image.jpg", "wb")
+    file = open(@image_src, "wb")
     IO.copy_stream(download, file)
     download.close
     file.close
-    @image_src = "image.jpg"
   end
 
   #
@@ -22,7 +22,7 @@ class SegmentationProcess
   # => and changing to greyscale the colors with less presence of red
   #
   def process
-    image = Magick::ImageList.new("public/images/image.jpg").first
+    image = Magick::ImageList.new(@image_src).first
     image_pixels = image.get_pixels(0, 0, image.columns, image.rows)
 
     histogram = Hash.new
@@ -47,6 +47,6 @@ class SegmentationProcess
     end
 
     image.store_pixels(0,0, image.columns, image.rows, image_pixels)
-    image.write("public/images/image.jpg")
+    image.write(@image_src)
   end
 end

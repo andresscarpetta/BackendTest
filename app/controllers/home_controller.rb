@@ -16,6 +16,6 @@ class HomeController < ApplicationController
   def show_results
     @results = SegmentationProcess.new()
     @results.process()
-    send_file("public/images/" + @results.image_src, { type: "image/jpeg", disposition: 'inline' })
+    send_file(@results.image_src, { type: "image/jpeg", disposition: 'inline' })
   end
 end
