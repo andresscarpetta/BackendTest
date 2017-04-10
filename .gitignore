@@ -20,4 +20,4 @@
 /.rvmrc
 
 # Ignore img source, as it has to be downloaded
-/public/images/image.jpg
+image.jpg

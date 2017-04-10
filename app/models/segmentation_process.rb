@@ -28,21 +28,22 @@ class SegmentationProcess
     histogram = Hash.new
     image_pixels.each do |pixel|
       color = [pixel.red, pixel.green, pixel.blue]
-      if(histogram.has_key?(color))
-        histogram[color] += 1
-      else
-        histogram[color] = 0
+      if(!histogram.has_key?(color))
+        histogram[color] = Array.new
       end
+      histogram[color] << pixel
     end
 
-    histogram = histogram.sort {|a, b| b[0][0] <=> a[0][0]}
-    colors = histogram.transpose[0][0...1000]
-    image_pixels.each do |pixel|
-      if(!colors.include?([pixel.red, pixel.green, pixel.blue]) )
-        gray = (pixel.red*0.3 + pixel.green*0.59 + pixel.blue*0.11)
-        pixel.red = gray
-        pixel.blue = gray
-        pixel.green = gray
+    colors = histogram.keys.sort {|a, b| b[0] <=> a[0]}
+    colors = colors[0...1000]
+    histogram.each do |color, pixels|
+      if(!colors.include?(color))
+        pixels.each do |pixel|
+          gray = (pixel.red*0.3 + pixel.green*0.59 + pixel.blue*0.11)
+          pixel.red = gray
+          pixel.blue = gray
+          pixel.green = gray
+        end
       end
     end
 
